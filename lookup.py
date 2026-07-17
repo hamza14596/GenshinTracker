@@ -15,6 +15,8 @@ def loadup_data():
 
 def get_character_name(char_id, char_data, loc_data):
     char_info = char_data.get(str(char_id))
+    if char_info is None:
+        return None
     name_hash = char_info.get('NameTextMapHash')
     char_name = loc_data.get(str(name_hash))
     return char_name
