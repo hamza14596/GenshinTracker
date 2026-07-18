@@ -23,11 +23,15 @@ if response.status_code == 200:
         char_id = char.get("avatarId")
         char_name = get_character_name(char_id, char_data, loc_data)
         
-        # If lookup.py returns None, skip to the next character
         if char_name is None:
             continue
-            
-        st.write(char_name)
-        st.write("id:", char_id)
+        if char.get('talentIdList') is None:
+            constellation_num = 0
+        else:
+            constellation_num = len(char.get('talentIdList'))
+        char_level =  char.get('propMap').get('4001').get('val')
+        st.write(char_name,'Lv.',char_level,'| Constellation: ',constellation_num)
+        char_icon_url = get_char_icon(char_id, char_data) 
+        st.image(char_icon_url, width=100)
 else:
     st.write(f'Error: {response.status_code}')
