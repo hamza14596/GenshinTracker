@@ -1,9 +1,33 @@
 import requests
 import time
+import streamlit as st
 
 char_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json'
 loc_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json'
 
+STAT_NAME = {
+    'FIGHT_PROP_HP' : 'HP',
+    'FIGHT_PROP_HP_PERCENT' : 'HP %',
+    'FIGHT_PROP_ATTACK' : 'ATK',
+    'FIGHT_PROP_ATTACK_PERCENT': 'ATK %',
+    'FIGHT_PROP_DEFENSE': 'DEF',
+    'FIGHT_PROP_DEFENSE_PERCENT': 'DEF %',
+    'FIGHT_PROP_CRITICAL': 'CRIT RATE',
+    'FIGHT_PROP_CRITICAL_HURT': 'CRIT DMG',
+    'FIGHT_PROP_CHARGE_EFFICIENCY': 'ENERGY RECHARGE',
+    'FIGHT_PROP_ELEMENT_MASTERY': 'Elemental Mastery',
+    'FIGHT_PROP_HEAL_ADD': 'Healing Bonus %',
+    'FIGHT_PROP_FIRE_ADD_HURT': 'Pyro DMG Bonus',
+    'FIGHT_PROP_ICE_ADD_HURT': 'Cryo DMG Bonus',
+    'FIGHT_PROP_WIND_ADD_HURT': 'Anemo DMG Bonus',
+    'FIGHT_PROP_ROCK_ADD_HURT': 'Geo DMG Bonus',
+    'FIGHT_PROP_GRASS_ADD_HURT': 'Dendro DMG Bonus',
+    'FIGHT_PROP_ELEC_ADD_HURT': 'Electro DMG Bonus',
+    'FIGHT_PROP_WATER_ADD_HURT': 'Hydro DMG Bonus',
+    'FIGHT_PROP_PHYSICAL_ADD_HURT': 'Physical DMG Bonus',
+     }
+
+@st.cache_data(ttl=3600)
 def loadup_data():
     response_char = requests.get(char_url)
     response_loc = requests.get(loc_url)
@@ -29,14 +53,27 @@ def get_char_icon(char_id, char_data):
     return icon_url
 
 def get_item_name(name_hash, loc_data):
-    item_name = loc_data.get(str(name_hash))
+    if str(name_hash).isdigit():
+        for offset in [0,512,1024,1536,2048]: 
+            test_hash = str(int(name_hash)+ offset)
+            item_name = loc_data.get(str(test_hash))
+
+            if item_name is not None:
+                return item_name
+    elif item_name is None:
+        return f"Unknown Item (Hash: {name_hash})"
     return item_name
+ 
+def get_stat_name(prop_id):
+    return STAT_NAME.get(prop_id, prop_id)
 
 def get_item_icon_url(icon_name):
     icon_url = f'https://enka.network/ui/{icon_name}.png'
     return icon_url
 
 if __name__ == "__main__":
+    fresh_loc = requests.get(loc_url).json()['en']
+    print("does 3625393307 exist now:", "3625393307" in fresh_loc)
     char_data, loc_data = loadup_data()
 
     name = get_character_name(10000007, char_data, loc_data)
