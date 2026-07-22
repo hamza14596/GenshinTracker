@@ -1,4 +1,4 @@
-Genshin Impact Tracker
+Genshin Impact Tracker:
 A web dashboard that shows your Genshin Impact account details in real time hosted using streamlit.
 
 DEMO LINK: https://genshintracker-m5am6zmwnnv6emj6snu7vw.streamlit.app/
