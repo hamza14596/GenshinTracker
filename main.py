@@ -6,7 +6,7 @@ from lookup import loadup_data, get_character_name, get_char_icon, get_item_name
 artifact_name_shown = False
 artifact_substats = []
 
-uid = st.text_input('Enter ur UID: ')
+uid = st.text_input('UID: ')
 
 st.set_page_config(layout='wide')
 st.title("Genshin Tracker ")
@@ -180,7 +180,7 @@ if response.status_code == 200:
                 st.write(f'**CRIT RATE:** {crit_rate}%')
                 st.write(f'**CRIT DMG:** {crit_dmg}%')
                 st.write(f'**Energy Recharge:** {er}%')
-                st.write(f'**Elemental Mastery:** {er}')
+                st.write(f'**Elemental Mastery:** {total_em}')
                 st.subheader('**Talents**')
         
                 for i,skill_id in enumerate(skill_order):
