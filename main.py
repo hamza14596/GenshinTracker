@@ -139,6 +139,19 @@ if response.status_code == 200:
                     if 'reliquary' in item:
                         artifacts.append(item)
 
+                talent_labels = ["Normal", "Skill", "Burst", "Sprint"]
+
+                skill_level = selected_char.get('skillLevelMap',{})
+                
+                char_info = char_data.get(str(selected_id),{})
+                skill_order = char_info.get('SkillOrder',[])
+                skill_info = char_info.get('Skills',{})
+
+
+
+                    
+
+
                 fight_props = selected_char.get('fightPropMap', {})
 
                 total_hp = int(fight_props.get('2000',0))
@@ -168,6 +181,20 @@ if response.status_code == 200:
                 st.write(f'**CRIT DMG:** {crit_dmg}%')
                 st.write(f'**Energy Recharge:** {er}%')
                 st.write(f'**Elemental Mastery:** {er}')
+                st.subheader('**Talents**')
+        
+                for i,skill_id in enumerate(skill_order):
+         
+                    str_skill_id = str(skill_id)
+
+                    level = skill_level.get(str_skill_id,'1')
+                    
+
+                    skill_icon = skill_info.get(str_skill_id)
+
+                    talent_name = talent_labels[i] if i < len(talent_labels) else "Special"
+                
+                    st.write(f"**{talent_name} | Level:** {level} ")
 
                 for artifact in artifacts:
                     flat = artifact.get('flat',{})
