@@ -8,7 +8,6 @@ artifact_substats = []
 
 uid = st.text_input('UID: ')
 
-st.set_page_config(layout='wide')
 st.title("Genshin Tracker ")
 
 char_data, loc_data, namecard_data = loadup_data()
