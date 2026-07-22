@@ -3,6 +3,7 @@ import time
 import streamlit as st
 
 char_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json'
+namecard_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/namecards.json'
 loc_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json'
 
 STAT_NAME = {
@@ -31,11 +32,13 @@ STAT_NAME = {
 def loadup_data():
     response_char = requests.get(char_url)
     response_loc = requests.get(loc_url)
+    response_namecard = requests.get(namecard_url)
     char_data = response_char.json()
     loc_data = response_loc.json()
+    namecard_data = response_namecard.json()
     loc_data = loc_data['en']
 
-    return char_data, loc_data
+    return char_data, loc_data, namecard_data
 
 def get_character_name(char_id, char_data, loc_data):
     char_info = char_data.get(str(char_id))
@@ -47,10 +50,23 @@ def get_character_name(char_id, char_data, loc_data):
 
 def get_char_icon(char_id, char_data):
     char_info = char_data.get(str(char_id))
+    if char_info is None:
+        return None
     icon_name = char_info.get('SideIconName')
-    icon_name = icon_name.replace('_Side', '')
-    icon_url = f'https://enka.network/ui/{icon_name}.png'
-    return icon_url
+    if icon_name:
+
+        icon_name = icon_name.replace('_Side', '')
+        return  f'https://enka.network/ui/{icon_name}.png'
+
+    return None
+
+def get_namecard_url(namecard_id,namecard_data):
+    if namecard_id is None:
+        return None
+    namecard_info = namecard_data.get(str(namecard_id),{})
+    icon_name = namecard_info.get('icon')
+    if icon_name:
+        return f"https://enka.network/ui/{icon_name}.png"
 
 def get_item_name(name_hash, loc_data):
     if str(name_hash).isdigit():
