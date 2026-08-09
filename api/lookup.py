@@ -1,6 +1,6 @@
 import requests
 import time
-import streamlit as st
+from functools import lru_cache
 
 char_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json'
 namecard_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/namecards.json'
@@ -28,7 +28,20 @@ STAT_NAME = {
     'FIGHT_PROP_PHYSICAL_ADD_HURT': 'Physical DMG Bonus %',
      }
 
-@st.cache_data(ttl=3600)
+_cache = {}
+
+@lru_cache(maxsize=1)
+def get_player_data(uid):
+
+    url = f'https://enka.network/api/uid/{uid}/'
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) GenshinTracker/1.0"
+        }
+
+    response = requests.get(url, headers=headers, timeout=20)
+    return response.json() if response.status_code == 200 else None
+
 def loadup_data():
     response_char = requests.get(char_url)
     response_loc = requests.get(loc_url)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{player_data['playerInfo']['nickname']}}'s Profile </title>
+</head>
+<body>
+
+    <div style="display: flex; align-items: center; gap: 15px;">
+        {% if profile_icon_url %}
+        <img src="{{ profile_icon_url }}" width="80" style="border-radius: 50%">
+        {% endif %}
+
+        <h1>{{player_data['playerInfo']['nickname']}}</h1>
+    </div>
+
+    <p>Adventure Rank: {{player_data['playerInfo']['level']}}</p>
+    <p>World Level: {{player_data['playerInfo']['worldLevel'] }}</p>
+    <p>Signature: {{ player_data['playerInfo']['signature'] }}</p>
+
+    <h2>Character Roster </h2> 
+
+    <ul>
+    {% for char in player_data['avatarInfoList'] %}
+
+        <li style="margin-bottom: 10px;">
+           <a href="/player/{{ player_data['uid']}}/character/{{ char['avatarId']}}"
+              style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: black;"
+
+              <img src="{{char['icon_url']}}" width="50" style="border-radius: 5px;"
+              <span>
+                <strong>{{ char['name']}}</strong> | Level: {{ char['propMap']['4001']['val']}}
+              </span>
+            
+
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html> 

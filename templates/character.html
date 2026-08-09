@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <title>{{ name}}'s Stats</title>
+</head>
+<body style="font-family: sans-serif; background: #12121e; color: white; padding: 20px;">
+
+    <a href="/player/{{ uid }}" style="color: #82aaff ; text-decoration: none;"> Back to Roster </a>
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
+        <img src="{{ icon }}" width="120" style="border-radius: 50%; border: 2px solid white;;">
+        <div>
+            <h1 style="margin: 0;">{{ name }}</h1>
+            <p style="margin: 5px 0 0 0;"> Level {{ level}} | Constellation {{ constellations }}</p>
+        </div>
+    </div>
+
+    <hr style="border-color: #333; margin: 20px 0;">
+
+    <h2> Total Stats</h2>
+
+    <p>HP: {{stats.hp}} | ATK: {{ stats.atk}} | DEF: {{ stats.def }} | EM: {{ stats.em }} </p>
+    <p>CRIT RATE: {{<stats.crit_rate }}% | CRIT DMG: {{ stats.crit_dmg }}% | ER: {{stats.er }}%</p>
+
+    <h2> Weapon </h2>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        {% if weapon_icon %}
+            <img src="{{ weapon_icon }}" width="80">
+        {% end if %}
+        <strong>{{weapon_name}}</strong>
+    </div>
+
+    <hr style="border-color: #333; margin: 20px 0;">
+
+    <h2>Artifacts</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 15px">
+
+        {% for art in artifacts %}
+            <div style="background: #232338; padding: 15px; border-radius: 8px; width: 200px;">
+
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;">{{art.name}}</h4>
+                <img src="{{ art.icon }}" width="60">
+                <p style="color: #eebb55; font-weight: bold; font-size: 14px;">
+                    {{ art.main_stat_name }}: {{ art.main_stat_val }}
+                </p>
+
+                <ul style="padding-left: 15px; font-size: 13px; margin-bottom: 0;">
+                    {% for sub in art.substat %}
+                        <li>{{ sub.name }}: {{ sub.val }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
