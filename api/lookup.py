@@ -28,6 +28,38 @@ STAT_NAME = {
     'FIGHT_PROP_PHYSICAL_ADD_HURT': 'Physical DMG Bonus %',
      }
 
+CUSTOM_CHARACTERS = {
+    10000131: {
+        "name": "Nicole",
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Nicole.png",
+    },
+    10000125: {
+        "name": "Columbina",
+        "icon": "https://enka.network/ui/UI_AvatarIcon_Columbina.png"
+    },
+    10000128: {
+        "name": "Varka:",
+        "icon": "https://enka.network/ui/UI_AvatarIcon_Varka.png"
+    },
+    10000129:{
+    "name": "Lohen",
+    "icon": "https://enka.network/ui/UI_AvatarIcon_Lohen.png"
+    },
+    10000133: {
+        "name": "Sandrone",
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Sandrone.png"
+    },
+    10000134: {
+        "name":"Odette",
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Odette.png"
+    },
+    10000134:{
+        "name":"Alyosha",
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Alyosha.png"
+    }
+    }
+
+
 _cache = {}
 
 @lru_cache(maxsize=1)
@@ -46,6 +78,7 @@ def loadup_data():
     response_char = requests.get(char_url)
     response_loc = requests.get(loc_url)
     response_namecard = requests.get(namecard_url)
+
     char_data = response_char.json()
     loc_data = response_loc.json()
     namecard_data = response_namecard.json()
@@ -54,20 +87,30 @@ def loadup_data():
     return char_data, loc_data, namecard_data
 
 def get_character_name(char_id, char_data, loc_data):
+
+    if int(char_id) in CUSTOM_CHARACTERS:
+        return CUSTOM_CHARACTERS[int(char_id)]["name"]
+
     char_info = char_data.get(str(char_id))
     if char_info is None:
-        return None
+        return f"Missing ID: {char_id}"
+    
     name_hash = char_info.get('NameTextMapHash')
     char_name = loc_data.get(str(name_hash))
+
     return char_name
 
 def get_char_icon(char_id, char_data):
+
+    if int(char_id) in CUSTOM_CHARACTERS:
+        return CUSTOM_CHARACTERS[int(char_id)]["icon"]
+
     char_info = char_data.get(str(char_id))
     if char_info is None:
         return None
     icon_name = char_info.get('SideIconName')
-    if icon_name:
 
+    if icon_name:
         icon_name = icon_name.replace('_Side', '')
         return  f'https://enka.network/ui/{icon_name}.png'
 

@@ -31,7 +31,13 @@ def display_player(uid):
 
     for char in player_data.get('avatarInfoList', []):
         char_id = char.get('avatarId')
-        char['name'] = get_character_name(char_id, char_data, loc_data)
+        extracted_name = get_character_name(char_id,char_data,loc_data)
+
+        if char_id == 10000131:
+            char['name'] = "Nicole"
+        else:
+            char['name'] = extracted_name 
+
         char['icon_url'] = get_char_icon(char_id, char_data)
     
     return render_template('player.html', player_data=player_data, profile_icon_url=profile_icon_url)
@@ -67,7 +73,7 @@ def display_character(uid, char_id):
     fight_props = selected_char.get('fightPropMap', {})
     stats ={
         'hp': int(fight_props.get('2000',0)),
-        'atk': int(fight_props.get('20001',0)),
+        'atk': int(fight_props.get('2001',0)),
         'def': int(fight_props.get('2002',0)),
         'em': int(fight_props.get('28',0)),
         'crit_rate': int(fight_props.get('20',0)*100),
@@ -97,8 +103,8 @@ def display_character(uid, char_id):
 
             artifacts.append(artifact_info)
 
-        return render_template('character.html',
-                               uid=uid, name=char_name, level=char_level,
-                               icon=char_icon, constellations=constellations,
-                               weapon_name=weapon_name,weapon_icon=weapon_icon,
-                               stats=stats, artifacts=artifacts)
+    return render_template('character.html',
+                            uid=uid, name=char_name, level=char_level,
+                            icon=char_icon, constellations=constellations,
+                            weapon_name=weapon_name,weapon_icon=weapon_icon,
+                            stats=stats, artifacts=artifacts)

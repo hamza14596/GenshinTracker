@@ -23,14 +23,14 @@
     {% for char in player_data['avatarInfoList'] %}
 
         <li style="margin-bottom: 10px;">
-           <a href="/player/{{ player_data['uid']}}/character/{{ char['avatarId']}}"
-              style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: black;"
+           <a href="/player/{{ player_data['uid']}}/character/{{ char['avatarId'] }}"
+              style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: black;">
 
-              <img src="{{char['icon_url']}}" width="50" style="border-radius: 5px;"
+              <img src="{{char['icon_url']}}" width="50" style="border-radius: 5px;" >
               <span>
                 <strong>{{ char['name']}}</strong> | Level: {{ char['propMap']['4001']['val']}}
               </span>
-            
+            </a>
 
         </li>
     {% endfor %}

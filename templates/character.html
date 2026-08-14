@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
 <head>
     <title>{{ name}}'s Stats</title>
 </head>
@@ -20,13 +20,13 @@
     <h2> Total Stats</h2>
 
     <p>HP: {{stats.hp}} | ATK: {{ stats.atk}} | DEF: {{ stats.def }} | EM: {{ stats.em }} </p>
-    <p>CRIT RATE: {{<stats.crit_rate }}% | CRIT DMG: {{ stats.crit_dmg }}% | ER: {{stats.er }}%</p>
+    <p>CRIT RATE: {{stats.crit_rate }}% | CRIT DMG: {{ stats.crit_dmg }}% | ER: {{stats.er }}% </p>
 
     <h2> Weapon </h2>
     <div style="display: flex; align-items: center; gap: 10px;">
         {% if weapon_icon %}
             <img src="{{ weapon_icon }}" width="80">
-        {% end if %}
+        {% endif %}
         <strong>{{weapon_name}}</strong>
     </div>
 
@@ -45,7 +45,7 @@
                 </p>
 
                 <ul style="padding-left: 15px; font-size: 13px; margin-bottom: 0;">
-                    {% for sub in art.substat %}
+                    {% for sub in art.substats %}
                         <li>{{ sub.name }}: {{ sub.val }}</li>
                     {% endfor %}
                 </ul>
