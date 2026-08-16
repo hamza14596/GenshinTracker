@@ -32,32 +32,56 @@ CUSTOM_CHARACTERS = {
     10000131: {
         "name": "Nicole",
         "icon":"https://enka.network/ui/UI_AvatarIcon_Nicole.png",
+        "talent_icons":["https://enka.network/ui/Skill_A_02.png",
+                   "https://enka.network/ui/Skill_S_Nicole_01.png",
+                   "https://enka.network/ui/Skill_E_Nicole_01.png"]
     },
     10000125: {
         "name": "Columbina",
-        "icon": "https://enka.network/ui/UI_AvatarIcon_Columbina.png"
+        "icon": "https://enka.network/ui/UI_AvatarIcon_Columbina.png",
+        "talent_icons":["https://enka.network/ui/Skill_A_Catalyst_MD.png",
+                   "https://enka.network/ui/Skill_S_Columbina_01.png",
+                   "https://enka.network/ui/Skill_E_Columbina_01.png"]
     },
     10000128: {
         "name": "Varka:",
-        "icon": "https://enka.network/ui/UI_AvatarIcon_Varka.png"
+        "icon": "https://enka.network/ui/UI_AvatarIcon_Varka.png",
+        "talent_icons":["https://enka.network/ui/Skill_A_Claymore_MD.png",
+                   "https://enka.network/ui/Skill_S_Varka_01.png",
+                   "https://enka.network/ui/Skill_E_Varka_01.png"]
     },
     10000129:{
-    "name": "Lohen",
-    "icon": "https://enka.network/ui/UI_AvatarIcon_Lohen.png"
+        "name": "Lohen",
+        "icon": "https://enka.network/ui/UI_AvatarIcon_Lohen.png",
+        "talent_icons": ["https://enka.network/ui/Skill_A_Sword_MD.png",
+                    "https://enka.network/ui/Skill_S_Lohen_01.png",
+                    "https://enka.network/ui/Skill_E_Lohen_01.png"
+                    ]
     },
     10000133: {
         "name": "Sandrone",
-        "icon":"https://enka.network/ui/UI_AvatarIcon_Sandrone.png"
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Sandrone.png",
+        "talent_icons":["https://enka.network/ui/Skill_A_Catalyst_MD.png",
+                   "https://enka.network/ui/Skill_S_Sandrone_01.png",
+                   "https://enka.network/ui/Skill_E_Sandrone_01.png"]
     },
     10000134: {
         "name":"Odette",
-        "icon":"https://enka.network/ui/UI_AvatarIcon_Odette.png"
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Odette.png",
+        "talent_icons":["https://enka.network/ui/Skill_A_Polearm_MD.png",
+                   "https://enka.network/ui/Skill_S_Odette_01.png",
+                   "https://enka.network/ui/Skill_E_Odette_01.png"
+                   ]
     },
     10000134:{
         "name":"Alyosha",
-        "icon":"https://enka.network/ui/UI_AvatarIcon_Alyosha.png"
+        "icon":"https://enka.network/ui/UI_AvatarIcon_Alyosha.png",
+        "talent_icons":["https://enka.network/ui/Skill_A_Polearm_MD.png",
+                   "https:/enka.network/ui/SKill_S_Alyosha_01.png",
+                   "https://enka.network/ui/Skill_E_Alyosha_01.png"]
     }
-    }
+}
+
 
 
 _cache = {}

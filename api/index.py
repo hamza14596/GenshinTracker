@@ -69,6 +69,15 @@ def display_character(uid, char_id):
     weapon_flat = weapon_dict.get('flat',{})
     weapon_name = get_item_name(str(weapon_flat.get('nameTextMapHash')), loc_data)
     weapon_icon = get_item_icon_url(weapon_flat.get('icon'))
+    weapon_info = weapon_dict.get('weapon',{})
+
+    weapon_level = weapon_dict.get('weapon',{}).get('level',1)
+    affix_map = weapon_info.get('affixMap',{})
+
+    if affix_map:
+        weapon_refinement = list(affix_map.values())[0] + 1
+    else:
+        weapon_refinement = 1
 
     fight_props = selected_char.get('fightPropMap', {})
     stats ={
@@ -103,8 +112,66 @@ def display_character(uid, char_id):
 
             artifacts.append(artifact_info)
 
+    base_skills = selected_char.get('skillLevelMap',{})
+    bonus_skills = selected_char.get('proudSkillExtraLevelMap',{})
+
+    char_ref = char_data.get(str(char_id),{})
+
+
+    skill_order = char_ref.get('SkillOrder',[])
+    skill_icons = char_ref.get('Skills',{})
+    proud_map = char_ref.get('ProudMap',{})
+
+    talents = []
+    skill_names = ["Normal Attack","Elemental Skill", "Elemental Burst"]
+
+    if int(char_id) in CUSTOM_CHARACTERS:
+        raw_skill_ids = sorted(list(base_skills.keys()))
+
+        custom_icons = CUSTOM_CHARACTERS[int(char_id)].get("talent_icons",[])
+
+
+        for i,str_skill_id in enumerate(raw_skill_ids):
+
+            if i>=3:
+                break
+            
+            base_level = base_skills.get(str_skill_id,1)
+
+
+            icon_url = custom_icons[i] if i < len(custom_icons) else None
+
+            talents.append({
+                'name': skill_names[i],
+                'level': base_level,
+                'icon_url':icon_url,
+                'is_boosted': False
+            })
+    else:
+        for i,skill_id in enumerate(skill_order):
+            if i>=3:
+                break
+
+            str_skill_id = str(skill_id)
+            base_level = base_skills.get(str_skill_id,1)
+            proud_id = str(proud_map.get(str_skill_id,""))
+            bonus_level = bonus_skills.get(proud_id,0)
+
+            final_level = base_level + bonus_level
+
+            icon_name = skill_icons.get(str_skill_id)
+            icon_url = f"https://enka.network/ui/{icon_name}.png" if icon_name else None
+
+            talents.append({
+                "name": skill_names[i],
+                "level": final_level,
+                "icon_url":icon_url,
+                "is_boosted":bonus_level > 0
+            })
+
     return render_template('character.html',
                             uid=uid, name=char_name, level=char_level,
                             icon=char_icon, constellations=constellations,
-                            weapon_name=weapon_name,weapon_icon=weapon_icon,
-                            stats=stats, artifacts=artifacts)
+                            weapon_name=weapon_name,weapon_icon=weapon_icon,weapon_level=weapon_level,
+                            weapon_refinement=weapon_refinement,
+                            stats=stats, artifacts=artifacts, talents=talents)

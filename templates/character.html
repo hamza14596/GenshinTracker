@@ -28,6 +28,12 @@
             <img src="{{ weapon_icon }}" width="80">
         {% endif %}
         <strong>{{weapon_name}}</strong>
+        <br>
+        <div>
+        <span style="color: #e0e0e0; font-size: 14px;">
+            Lv. {{weapon_level}} | <span style="color: #ffcc32;">R{{weapon_refinement}}</span>
+        </span>
+        </div>
     </div>
 
     <hr style="border-color: #333; margin: 20px 0;">
@@ -52,5 +58,33 @@
             </div>
         {% endfor %}
     </div>
+
+    <hr style="border-color: #333; margin: 30px 0;">
+    <h2 style="color: #ffffff;"> Talents </h2>
+    
+    <div style="display: flex; gap: 12px; flex-wrap: nowrap;">
+        {% for talent in talents %}
+            <div style="background: #232328; padding: 15px 10px; border-radius: 8px; flex: 1; max-width: 160px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+
+                {% if talent.icon_url %}
+                    <img src="{{ talent.icon_url}}" width="50" style="border-radius: 50%; background: #35354a; padding: 6px; margin-bottom: 10px;">
+                {% else %}
+                    <div style="width: 65px; height: 50px; border-radius:50%; background: #35354a; margin-bottom: 10px;"></div>
+                {% endif %}
+
+                <strong style="font-size: 13px; color: #ffffff; margin-bottom: 6px;" display: block;">
+                    {{ talent.name }}
+                </strong>
+
+                {% if talent.is_boosted %}
+                    <span style="font-size: 16px; font-weight: bold; color: #00e5ff;">Lv. {{talent.level}}</span>
+                {% else %}
+                    <span style="font-size: 16px; font-weight: bold; color: #e0e0e0;">Lv. {{talent.level}}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div>
+    
 </body>
 </html>
