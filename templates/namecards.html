@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {{ nickname }}'s Namecards</title>
+</head>
+<body style="background-color: #0f101c; color: #ffffff; font-family: sans-serif; margin: 0; padding: 40px; text-align: center;">
+
+    <div style="max-width: 900px; margin: 0 auto;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <a href ="{{ url_for('display_player',uid=uid) }}"
+                style="text-decoration: none; color: #ffffff; background: #232338; padding: 10px 20px; border-radius: 8px; font-weight: bold;">
+                Back to Roster
+            </a>
+            <h1 style="margin: 0;"> {{ nickname }}'s Showcase</h1>
+            <div style="width: 130px;"></div>
+        </div>
+    
+
+        <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+        {% if namecards %}
+                        {% for bg_url in namecards %}
+                            <div style="width: 100%; max-width: 800px; height: 200px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+                                        background-image: linear-gradient(to right, rgba(15,16,28,0.95) 20%, rgba(15,16,28,0.4)), url('{{ bg_url }}');
+                                        background-size: cover; background-position: center right;">
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h3 style="color: #a0a0b0; font-style: italic;"> No namecards on display. </h3>
+                    {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

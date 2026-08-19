@@ -6,6 +6,8 @@ char_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/
 namecard_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/namecards.json'
 loc_url = 'https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json'
 
+namecard_cache = None
+
 STAT_NAME = {
     'FIGHT_PROP_HP' : 'HP',
     'FIGHT_PROP_HP_PERCENT' : 'HP %',
@@ -141,12 +143,22 @@ def get_char_icon(char_id, char_data):
     return None
 
 def get_namecard_url(namecard_id,namecard_data):
-    if namecard_id is None:
+    if not namecard_id or not namecard_data:
         return None
+        
     namecard_info = namecard_data.get(str(namecard_id),{})
-    icon_name = namecard_info.get('icon')
-    if icon_name:
-        return f"https://enka.network/ui/{icon_name}.png"
+
+    pic_path = namecard_info.get('picPath',[])
+
+    for pic in pic_path:
+        if pic.endswitch('_P'):
+            return f"https://enka.network/ui/{pic}.png"
+
+    if len(pic_path) > 0:
+        return f"https://enka.network/ui/{pic_path[-1]}.png"
+
+ 
+    return None
 
 def get_item_name(name_hash, loc_data):
     if str(name_hash).isdigit():
@@ -170,7 +182,7 @@ def get_item_icon_url(icon_name):
 if __name__ == "__main__":
     fresh_loc = requests.get(loc_url).json()['en']
     print("does 3625393307 exist now:", "3625393307" in fresh_loc)
-    char_data, loc_data = loadup_data()
+    char_data, loc_data, namecard_data = loadup_data()
 
     name = get_character_name(10000007, char_data, loc_data)
     print(name)

@@ -25,6 +25,26 @@ def display_player(uid):
     player_pp = player_info.get('profilePicture',{})
     avatar_id = player_pp.get('avatarId') or player_pp.get('id')
 
+    namecard_id = player_info.get('nameCardId')
+    namecard_bg = get_namecard_url(namecard_id, namecard_data)
+
+    if not namecard_bg:
+        namecard_bg = "https://enka.network/ui/UI_NameCardPic_0_P.png"
+
+    abyss_floor = player_info.get('towerFloorIndex',0)
+    abyss_chamber = player_info.get('towerLevelIndex',0)
+    abyss_progress = f"Floor {abyss_floor}-{abyss_chamber}" if abyss_floor else "Not Cleared"
+
+    theater_act = player_info.get('theaterActIndex',0)
+    theater_stars = player_info.get('theaterStarIndex',0)
+
+    achievements = player_info.get('finishAchievementNum',0)
+
+    profile_icon_url = None
+    if avatar_id:
+        profile_icon_url = get_char_icon(str(avatar_id),char_data)
+
+
     profile_icon_url = None
     if avatar_id:
         profile_icon_url = get_char_icon(str(avatar_id),char_data)
@@ -40,7 +60,14 @@ def display_player(uid):
 
         char['icon_url'] = get_char_icon(char_id, char_data)
     
-    return render_template('player.html', player_data=player_data, profile_icon_url=profile_icon_url)
+    return render_template('player.html', player_data=player_data,
+                            profile_icon_url=profile_icon_url,
+                            namecard_bg = namecard_bg,
+                            abyss_progress=abyss_progress,
+                            theater_act=theater_act,
+                            theater_stars=theater_stars,
+                            achievements=achievements
+                            )
 
 @app.route('/player/<uid>/character/<int:char_id>')
 def display_character(uid, char_id):
@@ -174,4 +201,29 @@ def display_character(uid, char_id):
                             icon=char_icon, constellations=constellations,
                             weapon_name=weapon_name,weapon_icon=weapon_icon,weapon_level=weapon_level,
                             weapon_refinement=weapon_refinement,
-                            stats=stats, artifacts=artifacts, talents=talents)
+                            stats=stats, artifacts=artifacts, talents=talents,
+                            )
+
+@app.route('/player/<uid>/namecards')
+def display_namecards(uid):
+    player_data = get_player_data(uid)
+    if not player_data:
+        return "Error: Could not load", 404
+
+    char_data,loc_data,namecard_data = loadup_data()
+    player_info = player_data.get('playerInfo',{})
+
+    showcased_ids = player_info.get('showNameCardIdList',[])
+    showcased_urls = []
+
+    for nc_id in showcased_ids:
+        url = get_namecard_url(nc_id, namecard_data)
+        if url:
+            showcased_urls.append(url)
+
+    return render_template(
+        'namecards.html',
+        uid=uid,
+        nickname=player_info.get('nickname','Player'),
+        namecards=showcased_urls
+    )

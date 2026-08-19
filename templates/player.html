@@ -1,39 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>{{player_data['playerInfo']['nickname']}}'s Profile </title>
 </head>
-<body>
-
-    <div style="display: flex; align-items: center; gap: 15px;">
+<body style="background-color:  #0f101c; color: #ffffff; font-family: sans-serif; margin: 0; padding: 20px;">
+    <div style="
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        background-color: #232338;
+        {% if namecard_bg %}
+        background-image: linear-gradient(to right, rgba(15,16,28,0.95) 20%, rgba(15,16,28,0.4)), url('{{namecard_bg}}');
+        background-size: cover;
+        background-position: center right;
+        {% endif %}
+        ">
         {% if profile_icon_url %}
-        <img src="{{ profile_icon_url }}" width="80" style="border-radius: 50%">
+            <img src="{{ profile_icon_url }}" width="90" height="90" style="border-radius: 50%; background: #1a1a2e; padding: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.5);" alt="Profile Picture">
         {% endif %}
 
-        <h1>{{player_data['playerInfo']['nickname']}}</h1>
+        <div>
+            <h1 style="margin: 0; font-size: 32px;">{{ player_data['playerInfo']['nickname'] }} </h1>
+            <p style="margin: 5px 0 0 0;color: #b3b3c1; font-style: italic;"> "{{ player_data['playerInfo']['signature'] }}"</p>
+        </div>
     </div>
 
-    <p>Adventure Rank: {{player_data['playerInfo']['level']}}</p>
-    <p>World Level: {{player_data['playerInfo']['worldLevel'] }}</p>
-    <p>Signature: {{ player_data['playerInfo']['signature'] }}</p>
+    <div style="display: flex; gap: 15px;margin-bottom: 30px; flex-wrap: wrap;">
 
-    <h2>Character Roster </h2> 
+        <div style="background: #232338; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; border-left: 4px solid #ffffff;">
+            <span style="color: #a0a0b0; font-size: 13px; text-transform: uppercase;"> Adventure Rank </span>
+            <strong style="display: block; font-size: 20px; margin-top: 5px;"> AR {{ player_data['playerInfo']['level'] }} <span style="font-size: 14px; color: #777;"> (WL {{ player_data['playerInfo']['worldLevel'] }}) </span></strong>
+        </div>
 
-    <ul>
-    {% for char in player_data['avatarInfoList'] %}
+        <div style="background: #232338; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; border-left: 4px solid #ffcc32;">
+            <span style="color: #a0a0b0; font-size: 13px; text-transform: uppercase;">Achievements</span>
+            <strong style="display: block; font-size:20px; margin-top: 5px;"> {{ achievements }}</strong>
+        </div>
 
-        <li style="margin-bottom: 10px;">
-           <a href="/player/{{ player_data['uid']}}/character/{{ char['avatarId'] }}"
-              style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: black;">
+        <div style="background: #232338; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; border-left: 4px solid #8e44ad;">
+            <span style="color: #a0a0b0; font-size: 13px; text-transform: uppercase;"> Spiral Abyss </span>
+            <strong style="display: block; font-size: 20px; margin-top: 5px;">{{ abyss_progress }} </strong>
+        </div>
 
-              <img src="{{char['icon_url']}}" width="50" style="border-radius: 5px;" >
-              <span>
-                <strong>{{ char['name']}}</strong> | Level: {{ char['propMap']['4001']['val']}}
-              </span>
-            </a>
+        <div style="background: #232338; padding: 15px; border-radius: 8px; flex: 1;min-width: 150px; border-left: 4px solid #00e5ff;">
+            <span style="color: #a0a0b0; font-size: 13px; text-transform: uppercase;"> Imaginarium Theater </span>
+            <strong style="display: block; font-size: 20px;margin-top: 5px;"> Act {{theater_act}} <span style="font-size: 14px; color: #ffcc32;"> (* {{theater_stars}}) </span></strong>
+        </div>
 
-        </li>
+        <a href="{{ url_for('display_namecards', uid=player_data['playerInfo']['uid'] or request.view_args['uid']) }}"
+           style="text-decoration: none; color: inherit; display: flex; flex: 1; min-width: 150px;">
+           <div style="background: #232338; padding: 15px; border-radius: 8px; width: 100%; border-left: 4px; solid #e91e63; transition: background 0.2s, transform 0.2s;"
+                onmouseover="this.style.background='#2c2c47'; this.style.transform='translateY(-3px)';"
+                onmouseout="this.style.background='#232338'; this.style.transform='translateY(0)';">
+                <span style="color: #a0a0b0; font-size: 13px; text-transform: uppercase;"> Showcase </span>
+                <strong style="display: block; font-size: 20px; margin-top: 5px;"> Namecards: </strong>
+                </div>
+        </a>
+           
+
+    </div>
+
+
+    <h2 style=" color: #ffffff; margin-bottom: 20px;">Character Roster </h2> 
+
+    <div style="display: flex; flex-wrap: wrap;gap: 15px;">
+        {% for char in player_data['avatarInfoList'] %}
+
+           <a href="{{ url_for('display_character', uid=player_data['playerInfo']['uid'] or request.view_args['uid'], char_id=char.avatarId) }}"
+              style="text-decoration: none; color: inherit;">
+
+              <div style="background: #232338; border-radius: 10px; padding: 15px; width: 130px; text-align: center; transition: transform 0.2s, background 0.2s;"
+                onmouseover="this.style.background='#2c2c47'; this.style.transform='translateY(-3px)';"
+                onmouseout="this.style.background='#232338'; this.style.transform='translateY(0)';">        
+            
+               
+                {% if char.icon_url %}
+                    <img src="{{char.icon_url}}" alt= "{{ char.name }}" width="80" height="80" style="border-radius: 50%; background: #1a1a2e; padding: 5px; margin: 0 auto 10px; display: block;">
+                {% else %}
+                    <div style="width: 80px; height: 80px; border-radius: 50%;background: #1a1a2e; margin: 0 auto 10px;"></div>
+                {% endif %}
+
+                <strong style="color: #ffffff; font-size: 14px; display: block; margin-bottom: 4px;">
+                    {{ char.name }}
+                </strong>
+                <span style="color: #00e5ff; font-size: 13px; font-weight: bold;">
+                    Lv. {{ char.propMap['4001'].val if char.propMap and '4001' in char.propMap else '?'}}
+                </span>
+            </div>
+
+        </a>
     {% endfor %}
-    </ul>
+</div>
+
 </body>
 </html> 
