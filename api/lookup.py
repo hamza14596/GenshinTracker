@@ -145,19 +145,26 @@ def get_char_icon(char_id, char_data):
 def get_namecard_url(namecard_id,namecard_data):
     if not namecard_id or not namecard_data:
         return None
-        
-    namecard_info = namecard_data.get(str(namecard_id),{})
+
+    str_id = str(namecard_id)
+    namecard_info = namecard_data.get(str(str_id),{})
+
+    print(f"debug 4 -data for {str_id}: {namecard_info}",flush=True)
+
 
     pic_path = namecard_info.get('picPath',[])
 
     for pic in pic_path:
         if pic.endswitch('_P'):
             return f"https://enka.network/ui/{pic}.png"
-
     if len(pic_path) > 0:
         return f"https://enka.network/ui/{pic_path[-1]}.png"
 
- 
+    icon_name = namecard_info.get('icon')
+    if icon_name:
+        banner_name = icon_name.replace('Icon','Pic') 
+        return f"https://enka.network/ui/{banner_name}.png"
+
     return None
 
 def get_item_name(name_hash, loc_data):

@@ -208,9 +208,9 @@ def display_character(uid, char_id):
 def display_namecards(uid):
     player_data = get_player_data(uid)
     if not player_data:
-        return "Error: Could not load", 404
+        return "Error: Could not load",404
 
-    char_data,loc_data,namecard_data = loadup_data()
+    char_data, loc_data, namecard_data = loadup_data()
     player_info = player_data.get('playerInfo',{})
 
     showcased_ids = player_info.get('showNameCardIdList',[])
