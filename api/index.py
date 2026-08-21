@@ -1,9 +1,14 @@
 import os
+import sys
+
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from flask import Flask, render_template, request, redirect, url_for
 from lookup import *
-template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..','templates'))
-app = Flask(__name__, template_folder=template_dir)
 
+template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
+app = Flask(__name__, template_folder=template_dir)
 @app.route('/',methods=['GET','POST'])
 def home():
     if request.method == 'POST':
